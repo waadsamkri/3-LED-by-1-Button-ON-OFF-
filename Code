@@ -1,0 +1,37 @@
+#define LED_1_PIN 13
+#define LED_2_PIN 12
+#define LED_3_PIN 11
+
+#define BUTTON_PIN 2
+
+bool ledState = false;           // Tracks ON/OFF state
+bool lastButtonState = HIGH;     // Last button reading
+bool currentButtonState;
+
+void setup() {
+  pinMode(LED_1_PIN, OUTPUT);
+  pinMode(LED_2_PIN, OUTPUT);
+  pinMode(LED_3_PIN, OUTPUT);
+  
+  pinMode(BUTTON_PIN, INPUT_PULLUP); // Button between pin 2 and GND
+}
+
+void loop() {
+  currentButtonState = digitalRead(BUTTON_PIN);
+
+  // Detect button press (transition from HIGH to LOW)
+  if (lastButtonState == HIGH && currentButtonState == LOW) {
+    ledState = !ledState;  // Toggle LED state
+    updateLEDs(ledState);
+    delay(200); // Debounce delay
+  }
+
+  lastButtonState = currentButtonState;
+}
+
+void updateLEDs(bool state) {
+  digitalWrite(LED_1_PIN, state ? HIGH : LOW);
+  digitalWrite(LED_2_PIN, state ? HIGH : LOW);
+  digitalWrite(LED_3_PIN, state ? HIGH : LOW);
+ 
+}
